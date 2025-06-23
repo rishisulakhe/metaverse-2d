@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { userRouter } from './user';
 import { adminRouter } from './admin';
 import { spaceRouter } from './space';
-
+import client from '@repo/db/client'
 export const router= Router();
 
 router.post('/signup',(req,res)=>{
