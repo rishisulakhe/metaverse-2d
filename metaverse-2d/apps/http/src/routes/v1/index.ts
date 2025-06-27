@@ -49,11 +49,12 @@ router.post('/signin',async (req,res)=>{
         res.status(403).json({
             msg:"Validation error"
         })
+        return;
     }
     try{
         const user=await client.user.findUnique({
             where:{
-                username:parsedData.data?.username
+                username:parsedData.data.username
             }
         })
         if(!user){

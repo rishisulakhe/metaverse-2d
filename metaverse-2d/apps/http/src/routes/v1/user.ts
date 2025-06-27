@@ -1,7 +1,16 @@
-import { Router } from "express";
+import { Router, Request } from "express";
 import { UpdateMetadataSchema } from "../../types";
 import client from "@repo/db/client";
 import { userMiddleware } from "../../middleware/user";
+
+// Extend Express Request interface to include userId
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+    }
+  }
+}
 
 export const userRouter = Router();
 
