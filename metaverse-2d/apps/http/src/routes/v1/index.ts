@@ -26,7 +26,7 @@ router.post('/signup',async (req,res)=>{
         const user=await client.user.create({
             data:{
                 username:parsedData.data.username,
-                password:parsedData.data.password,
+                password:hashedPassword,
                 role:parsedData.data.type === "admin" ? "Admin" : "User"
             }
         })
@@ -43,46 +43,48 @@ router.post('/signup',async (req,res)=>{
     }
 })
 
-router.post('/signin',async (req,res)=>{
-    const parsedData=SigninSchema.safeParse(req.body);
-    if(!parsedData.success){
-        res.status(403).json({
-            msg:"Validation error"
-        })
+router.post('/signin', async (req, res) => {
+    console.log("SIGNIN ATTEMPT", req.body);
+
+    const parsedData = SigninSchema.safeParse(req.body);
+    if (!parsedData.success) {
+        console.log("Validation failed", parsedData.error);
+        res.status(403).json({ msg: "Validation error" });
         return;
     }
-    try{
-        const user=await client.user.findUnique({
-            where:{
-                username:parsedData.data.username
-            }
-        })
-        if(!user){
-            res.status(403).json({
-                msg:"User not found"
-            })
-            return
-        }
-        const isValid=await compare(parsedData.data.password,user.password);
 
-        if(!isValid){
-            res.status(403).json({msg:"User not found"})
-            return
-        }
+    const user = await client.user.findUnique({
+    where: { username: parsedData.data.username },
+    select: {
+        id: true,
+        username: true,
+        password: true, // 👈 ensure password is included
+        role: true
+    }
+    });
 
-        const token=jwt.sign({
-            userId:user.id,
-            role:user.role,
-        },JWT_PASSWORD);
+    if (!user) {
+        console.log("User not found in DB");
+        res.status(403).json({ msg: "User not found" });
+        return;
+    }
 
-        res.json({
-            token
-        })
-    
-} catch(e){
-    res.status(400).json({msg:"Internal server error"})
-}
-})
+    const isValid = await compare(parsedData.data.password, user.password);
+    if (!isValid) {
+        console.log("Password does not match");
+        res.status(403).json({ msg: "Invalid password" });
+        return;
+    }
+
+    const token = jwt.sign({
+        userId: user.id,
+        role: user.role,
+    }, JWT_PASSWORD);
+
+    console.log("Signin success, token:", token);
+    res.json({ token });
+});
+
 
 router.get('/elements',async (req,res)=>{
     const elements=await client.element.findMany();

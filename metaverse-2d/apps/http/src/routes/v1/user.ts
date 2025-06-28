@@ -1,4 +1,4 @@
-import { Router, Request } from "express";
+import { Router, Request, Response } from "express";
 import { UpdateMetadataSchema } from "../../types";
 import client from "@repo/db/client";
 import { userMiddleware } from "../../middleware/user";
@@ -37,9 +37,16 @@ userRouter.post("/metadata", userMiddleware, async (req, res) => {
     }
 })
 
-userRouter.get("/metadata/bulk", async (req, res) => {
+userRouter.get("/metadata/bulk", async (req: Request, res: Response) => {
     const userIdString = (req.query.ids ?? "[]") as string;
-    const userIds = (userIdString).slice(1, userIdString?.length - 1).split(",");
+      let userIds: string[];
+
+    try {
+        userIds = JSON.parse(userIdString);
+    } catch {
+        res.status(400).json({ msg: "Invalid ids format" });
+        return
+    }
     console.log(userIds)
     const metadata = await client.user.findMany({
         where: {
