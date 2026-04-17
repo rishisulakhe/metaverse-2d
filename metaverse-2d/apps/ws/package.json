@@ -13,8 +13,11 @@
   "description": "",
   "dependencies": {
     "@repo/db": "*",
+    "@repo/types": "*",
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/ws": "^8.5.12",
+    "bcrypt": "^6.0.0",
     "esbuild": "^0.24.0",
     "jsonwebtoken": "^9.0.2",
     "ws": "^8.18.0"

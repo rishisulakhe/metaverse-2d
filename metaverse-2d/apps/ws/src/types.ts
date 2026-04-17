@@ -1,1 +1,4 @@
-export type OutgoingMessage = any;
+export type {
+  OutgoingMessage,
+  IncomingMessage,
+} from '@repo/types/Messages'
