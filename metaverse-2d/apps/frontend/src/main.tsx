@@ -1,10 +1,23 @@
-import { StrictMode } from 'react'
+import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
+import { ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
+import store from './stores'
+import muiTheme from './MuiTheme'
+import App from './App'
 import './index.css'
-import App from './App.tsx'
+
+// Phaser game is started as a side effect when this module loads.
+import './PhaserGame'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  <React.StrictMode>
+    <Provider store={store}>
+      <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </React.StrictMode>
 )

@@ -1,15 +1,18 @@
-import PhaserGame from "./components/PhaserGame"
+import React from 'react'
+import { useAppSelector } from './hooks'
+import LoginDialog from './components/LoginDialog'
+import RoomSelectionDialog from './components/RoomSelectionDialog'
+import Chat from './components/Chat'
 
-
-function App() {
-
+export default function App() {
+  const loggedIn = useAppSelector((s) => s.user.loggedIn)
+  const roomJoined = useAppSelector((s) => s.room.roomJoined)
 
   return (
-<div>
-   <h2>My First Phaser + React + Vite Game</h2>
-      <PhaserGame/>
-</div>
+    <>
+      {!loggedIn && <LoginDialog />}
+      {loggedIn && !roomJoined && <RoomSelectionDialog />}
+      {loggedIn && roomJoined && <Chat />}
+    </>
   )
 }
-
-export default App
