@@ -12,12 +12,12 @@ export interface SignupBody { username: string; password: string; type: 'user' |
 export interface SigninBody { username: string; password: string }
 
 export async function signup(body: SignupBody) {
-  const res = await api.post<{ userId: string }>('/user/signup', body)
+  const res = await api.post<{ userId: string }>('/signup', body)
   return res.data
 }
 
 export async function signin(body: SigninBody) {
-  const res = await api.post<{ token: string }>('/user/signin', body)
+  const res = await api.post<{ token: string }>('/signin', body)
   return res.data
 }
 

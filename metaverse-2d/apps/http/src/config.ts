@@ -1,1 +1,1 @@
-export const JWT_PASSWORD="rishi"
+export const JWT_PASSWORD="your-secret-key"

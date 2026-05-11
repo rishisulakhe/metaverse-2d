@@ -35,10 +35,10 @@ router.post('/signup',async (req,res)=>{
         })
     }
     catch(e){
-        console.log("error in authentication");
-        console.log(e);
+        console.log("error in authentication", e);
         res.status(400).json({
-            msg:"User already exists"
+            msg:"User already exists",
+            error: e instanceof Error ? e.message : String(e)
         })
     }
 })

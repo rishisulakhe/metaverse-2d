@@ -1,0 +1,4 @@
+inside signup
+SIGNIN ATTEMPT { username: 'testuser14', password: 'testpass123' }
+Signin success, token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbXAwcnFiaGswMDAwdXQ4dHRkanZubjFrIiwicm9sZSI6IlVzZXIiLCJpYXQiOjE3Nzg0Nzc3NTJ9.4DPCJ66GvoUpEPgzAEqQyPHQl1pKtJm90RTw03WpOrE
+inside signup
