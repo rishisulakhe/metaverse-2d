@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --tsconfig=tsconfig.json --external:bcrypt",
-    "start": "node dist/index.js",
-    "dev": "npm run build && npm run start"
+    "start": "npx dotenv -e .env -- node dist/index.js",
+    "dev": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --tsconfig=tsconfig.json --external:bcrypt && npx dotenv -e .env -- node --watch dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "bcrypt": "^6.0.0",
     "esbuild": "^0.24.0",
     "jsonwebtoken": "^9.0.2",
+    "dotenv": "^16.5.0",
     "ws": "^8.18.0"
   }
 }

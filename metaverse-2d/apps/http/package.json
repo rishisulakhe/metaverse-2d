@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --tsconfig=tsconfig.json --external:bcrypt",
     "start": "npx dotenv -e .env -- node dist/index.js",
+    "dev": "npx esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --tsconfig=tsconfig.json --external:bcrypt && npx dotenv -e .env -- node --watch dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

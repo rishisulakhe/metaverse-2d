@@ -1,1 +1,1 @@
-export const JWT_PASSWORD="your-secret-key"
+export const JWT_PASSWORD = process.env.JWT_PASSWORD ?? "123kasdk123";
