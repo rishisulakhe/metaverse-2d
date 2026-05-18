@@ -110,17 +110,20 @@ describe("Authentication", () => {
 
 describe("User metadata endpoint", () => {
     let token = "";
-    let avatarId = ""
+    let avatarId = "";
+    let adminId = "";
 
     beforeAll(async () => {
        const username = `kirat-${Math.random()}`
        const password = "123456"
 
-       await axios.post(`${BACKEND_URL}/api/v1/signup`, {
+       const signupResponse = await axios.post(`${BACKEND_URL}/api/v1/signup`, {
         username,
         password,
         type: "admin"
        });
+
+       adminId = signupResponse.data.userID;
 
        const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
         username,
@@ -175,8 +178,15 @@ describe("User metadata endpoint", () => {
         expect(response.status).toBe(403)
     })
 
-    test("test 3", () => {
+    test("User can get their own metadata after setting it", async () => {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/user/metadata/bulk?ids=[${adminId}]`, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            }
+        });
         
+        expect(response.status).toBe(200);
+        expect(response.data.avatars.length).toBe(1);
     })
 });
 
@@ -195,7 +205,7 @@ describe("User avatar information", () => {
          type: "admin"
         });
 
-        userId = signupResponse.data.userId
+        userId = signupResponse.data.userID
  
         console.log("userid is " + userId)
         const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
@@ -255,7 +265,7 @@ describe("Space information", () => {
          type: "admin"
         });
 
-        adminId = signupResponse.data.userId
+        adminId = signupResponse.data.userID
  
         const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
          username,
@@ -270,7 +280,7 @@ describe("Space information", () => {
             type: "user"
         });
    
-        userId = userSignupResponse.data.userId
+        userId = userSignupResponse.data.userID
     
         const userSigninResponse = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
             username: username + "-user",
@@ -474,7 +484,7 @@ describe("Arena endpoints", () => {
          type: "admin"
         });
 
-        adminId = signupResponse.data.userId
+        adminId = signupResponse.data.userID
  
         const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
          username: username,
@@ -489,7 +499,7 @@ describe("Arena endpoints", () => {
             type: "user"
         });
    
-        userId = userSignupResponse.data.userId
+        userId = userSignupResponse.data.userID
     
         const userSigninResponse = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
             username: username  + "-user",
@@ -657,7 +667,7 @@ describe("Admin Endpoints", () => {
          type: "admin"
         });
 
-        adminId = signupResponse.data.userId
+        adminId = signupResponse.data.userID
  
         const response = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
          username: username,
@@ -672,7 +682,7 @@ describe("Admin Endpoints", () => {
             type: "user"
         });
    
-        userId = userSignupResponse.data.userId
+        userId = userSignupResponse.data.userID
     
         const userSigninResponse = await axios.post(`${BACKEND_URL}/api/v1/signin`, {
             username: username  + "-user",
@@ -851,7 +861,7 @@ describe("Websocket tests", () => {
             username: username + `-user`,
             password
         })
-        userId = userSignupResponse.data.userId
+        userId = userSignupResponse.data.userID
         userToken = userSigninResponse.data.token
         console.log("useroktne", userToken)
         const element1Response = await axios.post(`${BACKEND_URL}/api/v1/admin/element`, {
